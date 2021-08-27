@@ -61,8 +61,9 @@ const updateBoard = (selectedNum, selectedNumPos, zeroPos) => {
 const checkWin = () => {
   let lastnum;
   let num;
+  let rowLen = board[0].length
   for (let row = 0; row < board.length; row++) {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < rowLen; i++) {
 
       num = board[row][i]
 
@@ -113,7 +114,7 @@ const startGame = () => {
 
       if (isInt(userInp)) {
         selectedNum = parseInt(userInp)
-        if (selectedNum <= 8 && selectedNum >= 1) {
+        if (selectedNum <= biggestNum && selectedNum >= lowestNum) {
 
           selectedNumPos = getIndex(selectedNum);
           zeroPos = getIndex(0);
