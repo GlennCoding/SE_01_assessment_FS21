@@ -6,7 +6,7 @@ const defaultBoard = [
   [7, 0, 8],
 ]
 
-let board;
+let board = [];
 
 const lowestNum = 1;
 const biggestNum = 8;
@@ -100,6 +100,13 @@ const checkWin = () => {
   }
 }
 
+
+const resetBoard = () => {
+  board = defaultBoard.map(function (arr) {
+    return arr.slice();
+  });
+}
+
 const startSubGame = () => {
 
   let gameRunning = true;
@@ -136,19 +143,24 @@ const startSubGame = () => {
     if (checkWin()) {
       console.log("You have won!")
       gameRunning = false;
+      return moves
     }
   }
 }
 
 const startGame = () => {
   let subGamesPlayed = 3
+  let highScore;
 
   for (let i = 0; i < subGamesPlayed; i++) {
-    board = defaultBoard;
+    resetBoard()
     console.log(`Game ${i + 1}: `)
-    startSubGame();
+    const score = startSubGame();
+    if (score < highScore || !highScore) {
+      highScore = score
+    }
   }
-
+  console.log(`You finished the game with a highscore of: ${highScore} Moves`)
 }
 
 startGame();
