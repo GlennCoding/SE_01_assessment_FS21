@@ -21,6 +21,16 @@ const isInt = (value) => {
   return !isNaN(value) && (x | 0) === x;
 }
 
+const getIndex = (num) => {
+  let numIndex;
+  board.forEach((row, index) => {
+    if (row.includes(num)) {
+      numIndex = [index, row.indexOf(num)]
+    }
+  })
+  return numIndex
+}
+
 const startGame = () => {
   let selectedNum;
   printBoard();
