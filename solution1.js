@@ -6,11 +6,8 @@ let board = [
   [7, 0, 8],
 ]
 
-const winningPos = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 0],
-]
+const lowestNum = 1;
+const biggestNum = 8;
 
 const printBoard = () => {
   board.forEach((row) => {
@@ -62,16 +59,42 @@ const updateBoard = (selectedNum, selectedNumPos, zeroPos) => {
 }
 
 const checkWin = () => {
+  let lastnum;
+  let num;
   for (let row = 0; row < board.length; row++) {
     for (let i = 0; i < 3; i++) {
-      if (board[row][i] === winningPos[row][i]) {
+
+      num = board[row][i]
+
+      if (num === 0 && !lastnum) {
         continue
+      } else if (num === 0 && lastnum) {
+        return false
+      }
+      if (num === lowestNum)
+        if (num === biggestNum) {
+          return true
+        }
+      if (!lastnum) {
+        if (num === 0) {
+          continue
+        } else if (num === lowestNum) {
+          lastnum = num
+          continue
+        } else {
+          return false
+        }
+      }
+      if (lastnum + 1 === num) {
+        if (num === biggestNum) {
+          return true
+        }
+        lastnum = num
       } else {
         return false
       }
     }
   }
-  return true
 }
 
 const startGame = () => {
