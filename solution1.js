@@ -6,7 +6,11 @@ let board = [
   [8, 7, 0],
 ]
 
-const boardDimension = 3;
+const winningPos = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 0],
+]
 
 const printBoard = () => {
   board.map((row) => {
@@ -54,6 +58,8 @@ const checkValidStep = (pos1, pos2) => {
 
 const selectMove = () => {
   let selectedNum;
+  let selectedNumPos;
+  let zeroPos;
   printBoard();
 
   while (true) {
@@ -62,20 +68,18 @@ const selectMove = () => {
     if (isInt(userInp)) {
       selectedNum = parseInt(userInp)
       if (selectedNum <= 8 && selectedNum >= 1) {
-        break;
+
+        selectedNumPos = getIndex(selectedNum);
+        zeroPos = getIndex(0);
+
+        if (checkValidStep(selectedNumPos, zeroPos)) {
+          break;
+        }
       }
     }
     console.log("Please enter a valid field number.")
   }
-
-  const selectedNumPos = getIndex(selectedNum);
-  const zeroPos = getIndex(0);
-
-  if (checkValidStep(selectedNumPos, zeroPos)) {
-    console.log("good")
-  } else {
-    console.log("bad")
-  }
+  console.log("good")
 }
 
 selectMove();
