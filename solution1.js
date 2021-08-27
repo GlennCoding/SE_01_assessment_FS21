@@ -67,7 +67,6 @@ const checkWin = () => {
       if (board[row][i] === winningPos[row][i]) {
         continue
       } else {
-        console.log("failed")
         return false
       }
     }
