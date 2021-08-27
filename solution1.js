@@ -29,7 +29,30 @@ const getIndex = (num) => {
   return numIndex
 }
 
-const startGame = () => {
+const getDifference = (a, b) => {
+  return Math.abs(a - b);
+}
+
+const checkValidStep = (pos1, pos2) => {
+  // Check if row the smae
+  if (pos1[0] === pos2[0]) {
+    // Check if difference in row === 1
+    if (getDifference(pos1[1], pos2[1]) === 1) {
+      return true
+    }
+  } else {
+    // Check if difference in column === 1
+    if (getDifference(pos1[0], pos2[0]) === 1) {
+      // Check if on same column
+      if (pos1[1] === pos2[1]) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+const selectMove = () => {
   let selectedNum;
   printBoard();
 
@@ -44,6 +67,15 @@ const startGame = () => {
     }
     console.log("Please enter a valid field number.")
   }
+
+  const selectedNumPos = getIndex(selectedNum);
+  const zeroPos = getIndex(0);
+
+  if (checkValidStep(selectedNumPos, zeroPos)) {
+    console.log("good")
+  } else {
+    console.log("bad")
+  }
 }
 
-startGame();
+selectMove();
