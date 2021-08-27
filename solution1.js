@@ -3,7 +3,7 @@ const prompt = require('prompt-sync')();
 let board = [
   [1, 2, 3],
   [4, 5, 6],
-  [8, 7, 0],
+  [7, 0, 8],
 ]
 
 const winningPos = [
@@ -13,7 +13,7 @@ const winningPos = [
 ]
 
 const printBoard = () => {
-  board.map((row) => {
+  board.forEach((row) => {
     console.log(row)
   })
 }
@@ -56,30 +56,59 @@ const checkValidStep = (pos1, pos2) => {
   return false
 }
 
-const selectMove = () => {
-  let selectedNum;
-  let selectedNumPos;
-  let zeroPos;
-  printBoard();
-
-  while (true) {
-    let userInp = prompt("Please enter the field you want to move: ");
-
-    if (isInt(userInp)) {
-      selectedNum = parseInt(userInp)
-      if (selectedNum <= 8 && selectedNum >= 1) {
-
-        selectedNumPos = getIndex(selectedNum);
-        zeroPos = getIndex(0);
-
-        if (checkValidStep(selectedNumPos, zeroPos)) {
-          break;
-        }
-      }
-    }
-    console.log("Please enter a valid field number.")
-  }
-  console.log("good")
+const updateBoard = (selectedNum, selectedNumPos, zeroPos) => {
+  board[selectedNumPos[0]][selectedNumPos[1]] = 0;
+  board[zeroPos[0]][zeroPos[1]] = selectedNum;
 }
 
-selectMove();
+const checkWin = () => {
+  for (let row = 0; row < board.length; row++) {
+    for (let i = 0; i < 3; i++) {
+      if (board[row][i] === winningPos[row][i]) {
+        continue
+      } else {
+        console.log("failed")
+        return false
+      }
+    }
+  }
+  return true
+}
+
+const startGame = () => {
+
+  let gameRunning = true;
+
+  while (gameRunning) {
+
+    let selectedNum;
+    let selectedNumPos;
+    let zeroPos;
+    printBoard();
+
+    while (true) {
+      let userInp = prompt("Please enter the field you want to move: ");
+
+      if (isInt(userInp)) {
+        selectedNum = parseInt(userInp)
+        if (selectedNum <= 8 && selectedNum >= 1) {
+
+          selectedNumPos = getIndex(selectedNum);
+          zeroPos = getIndex(0);
+
+          if (checkValidStep(selectedNumPos, zeroPos)) {
+            break;
+          }
+        }
+      }
+      console.log("Please enter a valid field number.")
+    }
+    updateBoard(selectedNum, selectedNumPos, zeroPos)
+    if (checkWin()) {
+      console.log("You have won!")
+      gameRunning = false;
+    }
+  }
+}
+
+startGame();
