@@ -1,16 +1,14 @@
 const prompt = require('prompt-sync')();
 
 let board = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 0, 8],
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 0]
 ]
 
-const winningPos = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 0],
-]
+const lowestNum = 1;
+const biggestNum = 15;
 
 const printBoard = () => {
   board.forEach((row) => {
@@ -62,16 +60,43 @@ const updateBoard = (selectedNum, selectedNumPos, zeroPos) => {
 }
 
 const checkWin = () => {
+  let lastnum;
+  let num;
+  let rowLen = board[0].length
   for (let row = 0; row < board.length; row++) {
-    for (let i = 0; i < 3; i++) {
-      if (board[row][i] === winningPos[row][i]) {
+    for (let i = 0; i < rowLen; i++) {
+
+      num = board[row][i]
+
+      if (num === 0 && !lastnum) {
         continue
+      } else if (num === 0 && lastnum) {
+        return false
+      }
+      if (num === lowestNum)
+        if (num === biggestNum) {
+          return true
+        }
+      if (!lastnum) {
+        if (num === 0) {
+          continue
+        } else if (num === lowestNum) {
+          lastnum = num
+          continue
+        } else {
+          return false
+        }
+      }
+      if (lastnum + 1 === num) {
+        if (num === biggestNum) {
+          return true
+        }
+        lastnum = num
       } else {
         return false
       }
     }
   }
-  return true
 }
 
 const startGame = () => {
@@ -90,7 +115,7 @@ const startGame = () => {
 
       if (isInt(userInp)) {
         selectedNum = parseInt(userInp)
-        if (selectedNum <= 8 && selectedNum >= 1) {
+        if (selectedNum <= biggestNum && selectedNum >= lowestNum) {
 
           selectedNumPos = getIndex(selectedNum);
           zeroPos = getIndex(0);
